@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.api.TesteSpringBoot.DAO.UsuarioDAO;
 import br.com.api.TesteSpringBoot.model.Usuario;
-import br.com.educorp.ecommerce.model.Departamento;
 
 @RestController
 public class UsuarioController {
