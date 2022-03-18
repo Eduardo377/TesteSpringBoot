@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,5 +80,30 @@ public class UsuarioController {
 		return ResponseEntity.status(404).build();
 
 	}
+	
+	@DeleteMapping("/usuario/{id}")
+	public ResponseEntity<?> deletarUsuario (@PathVariable Integer id) {
+		Usuario usr = (Usuario) dao.findById(id).orElse(null);
+		if (usr != null) {
+			try {
+				dao.deleteById(id);
+				return ResponseEntity.status(204).build();
+			} catch (Exception e) {
+				// TODO: handle exception
+				return ResponseEntity.status(400).body(e.getMessage());
+			}
+		}
+		return ResponseEntity.notFound().build();
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
