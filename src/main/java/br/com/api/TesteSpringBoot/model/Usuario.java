@@ -25,11 +25,12 @@ public class Usuario {
 	@Column(name = "email", length = 50, nullable = false, unique = true)
 	private String email;
 	
+	@Column(name = "telefone", nullable = false)
+	private int telefone;
+
 	@Column(name = "senha", nullable = false, length = 50, columnDefinition = "TEXT")
 	private String senha;
 
-	@Column(name = "telefone", length = 15, nullable = false)
-	private String telefone;
 
 	public Integer getId() {
 		return id;
@@ -63,11 +64,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public String getTelefone() {
+	public int getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(String telefone) {
+	public void setTelefone(int telefone) {
 		this.telefone = telefone;
 	}
 
