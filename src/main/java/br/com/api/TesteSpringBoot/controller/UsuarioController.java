@@ -13,15 +13,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.api.TesteSpringBoot.DAO.UsuarioDAO;
+import br.com.api.TesteSpringBoot.dto.UsuarioDTO;
 import br.com.api.TesteSpringBoot.model.Usuario;
 
 @RestController
 public class UsuarioController {
 
 	@Autowired
-	UsuarioDAO dao;
+	private UsuarioDAO dao;
+	
+	@GetMapping("/usuarios/username")
+	public ResponseEntity<List<UsuarioDTO>> exibirUsername() {
+		List<UsuarioDTO> res = dao.recuperarUsername();
+			return ResponseEntity.status(200).body(res);
 
-	@GetMapping("/teste")
+	}
+
+	@GetMapping("/usuarios")
 	public ResponseEntity<List<Usuario>> exibirTodosOsUsuarios() {
 		List<Usuario> res = (List<Usuario>) dao.findAll();
 
@@ -31,14 +39,28 @@ public class UsuarioController {
 
 		return ResponseEntity.status(404).build();
 	}
-
-	@GetMapping("/teste/{id}")
+	
+	@GetMapping("/usuarios/{id}")
 	public ResponseEntity<?> mostrarUmUsuario(@PathVariable Integer id) {
 
-		Usuario res = (Usuario) dao.findById(id).orElse(null);
+		Usuario res = dao.findById(id).orElse(null);
 
 		if (res != null) {
-			return ResponseEntity.status(200).body(res);
+			Usuario u = new Usuario(res.getUsername(), res.getEmail()); 
+			return ResponseEntity.status(200).body(u);
+		}
+
+		return ResponseEntity.status(404).build();
+	}
+
+	@GetMapping("/usuarios/username/{id}")
+	public ResponseEntity<?> mostrarUsernameUmUsuario(@PathVariable Integer id) {
+
+		Usuario res = dao.findById(id).orElse(null);
+
+		if (res != null) {
+			UsuarioDTO u = new UsuarioDTO(res.getUsername(), res.getEmail()); 
+			return ResponseEntity.status(200).body(u);
 		}
 
 		return ResponseEntity.status(404).build();
@@ -82,7 +104,7 @@ public class UsuarioController {
 	}
 	
 	@DeleteMapping("/usuario/{id}")
-	public ResponseEntity<?> deletarUsuario (@PathVariable Integer id) {
+	public ResponseEntity<?> deletarUsuario(@PathVariable Integer id) {
 		Usuario usr = (Usuario) dao.findById(id).orElse(null);
 		if (usr != null) {
 			try {
